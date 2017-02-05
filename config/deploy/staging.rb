@@ -6,17 +6,17 @@
 # server 'example.com', user: 'deploy', roles: %w{app db web}, my_property: :my_value
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
-server '172.19.0.3', user: 'root', roles: %w{web app laravel}
+server '172.19.0.2', user: 'root', roles: %w{web app laravel composer}
 
 #git
-set :scm, :none
-set :repository, "."
-set :deploy_via, :copy
+#set :scm, :none
+#set :repository, "."
+#set :deploy_via, :copy
 
 # another
-set :repository, 'file:///path/to/your/git_repository'
-set :local_repository, "file://."
-set :scm, :git
+#set :repository, 'git@github.com:laravel/laravel.git'
+#set :local_repository, "file://."
+#set :scm, :git
 
 
 
@@ -52,11 +52,11 @@ set :scm, :git
 #
 # Global options
 # --------------
-#  set :ssh_options, {
-#    keys: %w(/home/rlisowski/.ssh/id_rsa),
-#    forward_agent: false,
-#    auth_methods: %w(password)
-#  }
+  set :ssh_options, {
+    keys: %w(/home/amritgc/.ssh/do/id_rsa),
+    forward_agent: false,
+    auth_methods: %w(publickey)
+  }
 #
 # The server-based syntax can be used to override options:
 # ------------------------------------

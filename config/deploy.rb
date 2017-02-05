@@ -2,13 +2,14 @@
 lock '3.6.1'
 
 set :application, 'myapp'
-#set :repo_url, 'git@example.com:me/my_repo.git'
+set :repo_url, 'https://github.com/laravel/laravel.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+set :branch, ENV["branch"] || "master"
 
 # Default deploy_to directory is /var/www/my_app_name
-# set :deploy_to, '/var/www/my_app_name'
+ set :deploy_to, '/var/www/myapp'
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -28,9 +29,22 @@ set :application, 'myapp'
 
 # Default value for linked_dirs is []
 # append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system'
-append :linked_dirs, 'storage'
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
+append :linked_dirs, 
+    'storage/app',
+    'storage/framework/cache',
+    'storage/framework/sessions',
+    'storage/framework/views',
+    'storage/logs'
+
+namespace :deploy do
+    after :updated, "composer:vendor_copy"
+    after :updated, "composer:install"
+    after :updated, "laravel:fix_permission"
+    after :finished, "agentcis:create_ver_txt"
+end
+

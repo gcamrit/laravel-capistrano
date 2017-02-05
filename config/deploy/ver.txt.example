@@ -1,0 +1,4 @@
+Date: %date%
+Branch: %branch%
+Revision: %revision%
+Deployed By: %deployed_by%
