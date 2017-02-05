@@ -51,6 +51,16 @@ namespace :laravel do
     task :fix_permission do
         on roles(:laravel) do
             execute :chmod, "-R 777 #{shared_path}/storage/"
+            execute :chmod, "-R 777 #{release_path}/bootstrap/cache/"
+
         end
     end
+
+    task :configure_dot_env do
+    dotenv_file = fetch(:laravel_dotenv_file)
+    on roles (:laravel) do
+      execute :cp, "#{dotenv_file} #{release_path}/.env"
+    end
+  end
+
 end

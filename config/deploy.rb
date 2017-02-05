@@ -2,15 +2,15 @@
 lock '3.6.1'
 
 set :application, 'myapp'
-set :repo_url, 'https://github.com/laravel/laravel.git'
+set :repo_url, 'https://github.com/gcamrit/laravel-capistrano.git'
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 set :branch, ENV["branch"] || "master"
 
 # Default deploy_to directory is /var/www/my_app_name
- set :deploy_to, '/var/www/myapp'
-
+set :deploy_to, '/var/www/myapp'
+set :laravel_dotenv_file, '/var/www/.env'
 # Default value for :scm is :git
 # set :scm, :git
 
@@ -45,6 +45,7 @@ namespace :deploy do
     after :updated, "composer:vendor_copy"
     after :updated, "composer:install"
     after :updated, "laravel:fix_permission"
-    after :finished, "agentcis:create_ver_txt"
+    after :updated, "laravel:configure_dot_env"    
+  #  after :finished, "myapp:create_ver_txt"
 end
 
