@@ -27,19 +27,6 @@ namespace :laravel do
         end
     end
 
-    desc 'Create ver.txt'
-    task :create_ver_txt do
-        on roles(:laravel) do
-            puts ("--> Copying ver.txt file")
-            execute "cp #{release_path}/config/deploy/ver.txt.example #{release_path}/public/ver.txt"
-            execute "sed --in-place 's/%date%/#{fetch(:current_time)}/g
-                        s/%branch%/#{fetch(:branch)}/g
-                        s/%revision%/#{fetch(:current_revision)}/g
-                        s/%deployed_by%/#{fetch(:user)}/g' #{release_path}/public/ver.txt"
-            execute "find #{release_path}/public -type f -name 'ver.txt' -exec chmod 664 {} \\;"
-        end
-    end
-
     task :set_variables do
         on roles(:laravel) do
               puts ("--> Copying environment configuration file")
@@ -50,9 +37,8 @@ namespace :laravel do
     end
     task :fix_permission do
         on roles(:laravel) do
-            execute :chmod, "-R 777 #{shared_path}/storage/"
-            execute :chmod, "-R 777 #{release_path}/bootstrap/cache/"
-
+            execute :chmod, "-R ug+rwx #{shared_path}/storage/ #{release_path}/bootstrap/cache/"
+            execute :chgrp, "-R www-data #{shared_path}/storage/ #{release_path}/bootstrap/cache/"
         end
     end
 
